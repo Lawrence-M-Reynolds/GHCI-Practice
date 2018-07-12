@@ -199,34 +199,103 @@ encode :: Int -> String -> String
 encode n xs = [shift n x | x <- xs]
 
 
+-- Chapter 6
+-- 1.
+{-
+For negative numbers the recursion would continue for ever:
 
+-3 * fac (-4)
+-3 * (-4 * fac (-5))
+..
+fac n | n > 0 = n * fac (n-1)
+-}
+fac :: Int -> Int
+fac 0 = 1
+fac n | n > 0 = n * fac (n-1)
 
+-- 2.
+sumdown :: Int -> Int
+sumdown 0 = 0
+sumdown n = n + sumdown(n-1)
 
+--3.
+{-
+* === multiply
+-}
+multiply :: Int -> Int -> Int
+multiply m 0 = 0
+multiply m n = m + (n-1) `multiply` m
 
+{-
+^ === exponentiation
+-}
 
+exponentiation :: Int -> Int -> Int
+exponentiation m 0 = 1
+exponentiation m n = m * m `exponentiation` (n-1)
 
+--4.
+euclid :: Int -> Int -> Int
+euclid x y | x == y = x
+euclid x y | x > 0 && y > 0 = euclid minVal (max x y - minVal) where minVal = min x y
 
+-- 5.
+{-
+length [1,2,3]
+= 1 + (length [2,3])
+= 1 + (1 + (length [3]))
+= 1 + (1 + (1+ (length [])))
+= 1 + (1 + (1+ (0)))
+= 3
+-}
 
+{-
+drop 3 [1,2,3,4,5]
+= drop 2 [2,3,4,5]
+= drop 1 [3,4,5]
+= drop 0 [4,5]
+= [4,5]
+-}
 
+{-
+init [1,2,3]
+= 1 : init [2,3]
+= 1 : (2 : init [3])
+= 1 : (2 : ([])
+= 1 : 2 : []
+= [1,2]
+-}
 
+-- 6.
+--   a. defined as and2
+and2 :: [Bool] -> Bool
+and2 [] = True
+and2 (x:xs) = x && and2 xs
 
+--   b. concat2
+concat2 :: [[a]] -> [a]
+concat2 [] = []
+concat2 (x:xs) = x ++ concat2 xs
 
+--   c. replicate2
+replicate2 :: Int -> a -> [a]
+replicate2 0 x = []
+replicate2 n x = x : replicate2 (n-1) x
 
+--   d. selectNth
+selectNth :: Int -> [a] -> a
+selectNth 0 (x:xs) = x
+selectNth n (x:xs) = selectNth (n-1) xs
+-- [3,121,56,23,5] !! 3 = 23
+-- 3 `selectNth` [3,121,56,23,5] = 23
 
+--   e. elem2
+elem2 :: Eq a => a -> [a] -> Bool
+elem2 x' [] = False
+elem2 x' (x:xs) = (x' == x) || elem2 x' xs
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+-- 121 `elem2` [3,121,56,23,5] = True
+-- 1213 `elem2` [3,121,56,23,5] = False
 
 
 
